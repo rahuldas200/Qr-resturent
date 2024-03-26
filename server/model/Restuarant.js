@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const restuarentSchema = new mongose.Schema( 
+const restuarentSchema = new mongoose.Schema( 
 
     {
         restuarentName: {
@@ -29,7 +29,7 @@ const restuarentSchema = new mongose.Schema(
         },
         menu:[
             {
-                type:mongose.Schema.Types.ObjectId,
+                type:mongoose.Schema.Types.ObjectId,
                 ref: "courseProgress",
             }
         ],
@@ -38,7 +38,7 @@ const restuarentSchema = new mongose.Schema(
         },
         tables:[
             {
-                type:mongose.Schema.Types.ObjectId,
+                type:mongoose.Schema.Types.ObjectId,
                 ref:"tables"
             }
         ]
@@ -49,5 +49,7 @@ const restuarentSchema = new mongose.Schema(
 
 )
 
-module.exports = mongoose.model("restuarent", restuarentSchema)
+const restuarent = mongoose.model("restuarent",restuarentSchema)
+
+module.exports = restuarent;
 

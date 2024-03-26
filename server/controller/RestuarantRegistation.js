@@ -1,6 +1,9 @@
 const restuarent = require('../model/Restuarant');
 const otp = require('../model/Otp');
 const otpGenerator = require('otp-generator')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const cloudinaryConnect = require('../config/Cloudinay');
 
 exports.sendMail = async (req, res) => {
     try{
@@ -27,7 +30,7 @@ exports.sendMail = async (req, res) => {
             )
         }
 
-        var otp = otpGenerator.generate(6, {
+        var Otp = otpGenerator.generate(6, {
             upperCaseAlphabets: false,
             lowerCaseAlphabets: false,
             specialChars: false,
@@ -36,7 +39,7 @@ exports.sendMail = async (req, res) => {
         const existatingOtp = await otp.findOne({otp})
 
         while (existatingOtp) {
-            otp = otpGenerator.generate(6, {
+            Otp = otpGenerator.generate(6, {
               upperCaseAlphabets: false,
               lowerCaseAlphabets: false,
               specialChars: false,
@@ -130,10 +133,160 @@ exports.registation = async (req, res) => {
 exports.login = async (req, res) => {
     try {
 
+        const {email ,password} = req.body;
+
+        if(!email || !password) {
+            res.status(200).json({
+                success:false,
+                message:"All field are required"
+            })
+        }
+
+        const user = await restuarent.findOne({email});
+
+        if(!user){
+            res.status(200).json({
+                success:false,
+                message:"User not found , please signup again"
+            })
+        }
+
+        const passwordVerify = bcrypt.compare(password,user.password);
+
+        if(!passwordVerify){
+            res.status(200).json({
+                success:false,
+                message:"Password is not matched , please try again"
+            })
+        }
+
+        const payload = {
+            userId : user._id,
+            email:user.email,
+        }
+
+        const secret_key = process.env.SECRET_KEY;
+
+        const newtToken = jwt.sign(payload,secret_key);
+
+        if(!token) {
+            res.status(200).json({
+                success:false,
+                message:"token is not created, please try it again"
+            })
+        }
+
+        const response = await restuarent.findByIdAndUpdate(user._id,{
+            token:newtToken,
+        },{new:true});
+
+        if(response){
+            res.status(200).json({
+                success:true,
+                message:"User loging successfully",
+                data:response
+            })
+        }
 
     } catch(error){
-        
+        res.status(200).json({
+            success:false,
+            message:"Login faild",
+            error,
+        })
 
     }
-} 
+}
+
+exports.UpdateRestuarent = async (req, res) => {
+
+    try{
+        const { restuarentName,restuarentAbout,totalTables,email,userId } = req.body;
+
+        if(!userId || !email) {
+            res.status(200).json( 
+                {
+                    success:false,
+                    message:"Unauthodrized",
+                }
+            )
+        }
+        const profile = req.files.profile;
+        const banner = req.files.banner;
+
+        const user = await restuarent.findById({userId});
+
+        if(restuarentAbout){
+            user.restuarentAbout = restuarentAbout;
+        }
+
+        if(restuarentName){
+            user.restuarentName = restuarentName;
+        }
+
+        if(totalTables){
+            user.totalTables = totalTables
+        }
+
+        if(profile){
+            const img = await cloudinaryConnect(
+                profile,
+                process.env.FOLDER_NAME,
+                1000,
+                1000
+            )
+
+            if(!img){
+                res.status(200).json( 
+                    {
+                        success:false,
+                        message:"profile not uploaded",
+                    }
+                )
+            }
+
+            user.image = img;
+        }
+        if(banner){
+
+            const bannerImg = await cloudinaryConnect(
+                profile,
+                process.env.FOLDER_NAME,
+                1000,
+                1000
+            )
+
+            if(!img){
+                res.status(200).json( 
+                    {
+                        success:false,
+                        message:"banner not uploaded",
+                    }
+                )
+            }
+
+            user.banner = bannerImg;
+        }
+        
+        await user.save();
+
+        res.status(200).json(
+            {
+                success:true,
+                message:"profile updated successfully",
+                user,
+
+            }
+        )
+
+    } catch(error){
+        res.status(200).json(
+            {
+                success:true,
+                message:"something went wrong while profile updated",
+                user,
+            }
+        )
+    }
+}
 
