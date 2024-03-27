@@ -3,7 +3,7 @@ const otp = require('../model/Otp');
 const otpGenerator = require('otp-generator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const cloudinaryConnect = require('../config/Cloudinay');
+const {uploadImageToCloudinary} = require('../utils/imageUploader');
 
 exports.sendMail = async (req, res) => {
     try{
@@ -229,12 +229,7 @@ exports.UpdateRestuarent = async (req, res) => {
         }
 
         if(profile){
-            const img = await cloudinaryConnect(
-                profile,
-                process.env.FOLDER_NAME,
-                1000,
-                1000
-            )
+            const img = await uploadImageToCloudinary(profile,process.env.RESTUARENT_FOLDER_NAME)
 
             if(!img){
                 res.status(200).json( 
@@ -249,12 +244,8 @@ exports.UpdateRestuarent = async (req, res) => {
         }
         if(banner){
 
-            const bannerImg = await cloudinaryConnect(
-                profile,
-                process.env.FOLDER_NAME,
-                1000,
-                1000
-            )
+            const bannerImg = await uploadImageToCloudinary(banner,process.env.RESTUARENT_FOLDER_NAME);
+            
 
             if(!img){
                 res.status(200).json( 

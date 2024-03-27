@@ -1,5 +1,8 @@
 const manu = require("../model/Manu");
 const restuarent = require('../model/Restuarant');
+const {uploadImageToCloudinary} = require('../utils/imageUploader')
+const cloudinary = require('cloudinary').v2
+
 
 exports.createManu = async (req, res) => {
 
@@ -28,7 +31,7 @@ exports.createManu = async (req, res) => {
     const uploadPromises = files.map(file => {
         return cloudinary.uploader.upload(file.buffer.toString('base64'), {
             resource_type: 'auto',
-            folder: 'manus'
+            folder:process.env.MANU_FOLDER_NAME
         });
     });
 
@@ -68,9 +71,89 @@ exports.createManu = async (req, res) => {
 
 exports.updateManu = async (req, res) => {
     try{
+
         
 
     } catch(err){
 
     }
 }
+
+exports.deleteManu = async (req , res) => {
+    try{
+        const {restuarentId, manuId} = req.body
+
+        if(!restuarentId || !manuId){
+            res.status(200).json({
+                success:true,
+                message:"some thing went wrong"
+            })
+        }
+
+        const response = await manu.findById(manuId);
+
+        
+
+        if(response.images.length !== 0 ){
+            let deletedCount = 0;
+
+            try{
+
+                for(const url of response.images) {
+                    const publicId = cloudinary.utils.extractPublicId(url);
+
+                    if(publicId){
+                        const result = await cloudinary.uploader.destroy(publicId);
+                    }
+                    if(result.result === 'ok'){
+                        deletedCount++;
+                    }
+                }    
+
+            } catch(err){
+                res.status(200).json({
+                    success:false,
+                    message:"some thing went wrong"
+                })
+            }
+        }
+
+        const deletemanu = await manu.findByIdAndDelete(manuId);
+
+        // if(!deletemanu){
+        //     res.status(200).json({
+        //         success:false,
+        //         message:"Delete faild"
+        //     })
+        // }
+
+        const updateRestuarent = await restuarent.findByIdAndDelete(restuarentId,
+            
+            {$pull:{manu:manuId}},
+            {new:true}
+        )
+
+        // if(!updateRestuarent){
+
+        //     res.status(200).json({
+        //         success:false,
+        //         message:"Delete faild"
+        //     })
+        // }
+
+        res.status(200).json({
+            success:true,
+            message:"Delete successfully"
+        })
+
+
+    }catch(error){
+        res.status(200).json({
+            success:false,
+            message:"Delete falid"
+        })
+    }
+}
+
+
+
