@@ -8,9 +8,9 @@ exports.createManu = async (req, res) => {
 
   try {
 
-    const {name,aboutDish,price,catagory,userId,email} = req.body;
+    const {name,aboutDish,price,catagory,restuarentId,email} = req.body;
 
-    if(!name || !aboutDish || !price || !catagory || !userId || !email){
+    if(!name || !aboutDish || !price || !catagory || !restuarentId || !email){
         res.status(200).json({
             success:false,
             message:"All field are required",
@@ -51,7 +51,7 @@ exports.createManu = async (req, res) => {
         }
     )
 
-    const response = await restuarent.findByIdAndUpdate(userId,{
+    const response = await restuarent.findByIdAndUpdate(restuarentId,{
         $push: { manu: result._id }
     })
 
@@ -71,13 +71,53 @@ exports.createManu = async (req, res) => {
 
 exports.updateManu = async (req, res) => {
     try{
+        const { manuId, name, aboutDish, price, catagory, restuarentId } = req.body;
 
-        
+        // Check if required fields are provided
+        if(!manuId || !name || !aboutDish || !price || !catagory || !restuarentId){
+            return res.status(200).json({
+                success: false,
+                message: "All fields are required"
+            });
+        }
 
-    } catch(err){
+        // Find the menu item by manuId
+        let menuToUpdate = await manu.findById(manuId);
 
+        // Check if the menu item exists
+        if(!menuToUpdate){
+            return res.status(200).json({
+                success: false,
+                message: "Menu item not found"
+            });
+        }
+
+        // Update the menu item details
+        menuToUpdate.name = name;
+        menuToUpdate.aboutDish = aboutDish;
+        menuToUpdate.price = price;
+        menuToUpdate.catagory = catagory;
+
+        // Save the updated menu item
+        const updatedMenu = await menuToUpdate.save();
+
+        // Return success response
+        res.status(200).json({
+            success: true,
+            message: "Menu item updated successfully",
+            data: updatedMenu
+        });
+
+    } catch(error){
+        // Return error response
+        res.status(200).json({
+            success: false,
+            message: "Menu item update failed",
+            error: error.message
+        });
     }
 }
+
 
 exports.deleteManu = async (req , res) => {
     try{
