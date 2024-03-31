@@ -5,7 +5,10 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav data-aos="zoom-in"  className=" flex justify-between gap-6 p-2 bg-[#00000093] pb-3 items-center">
+    <nav
+      data-aos="zoom-in"
+      className=" bg-[#242424] rounded-md text-base  mt-3 w-11/12 mx-auto flex justify-between gap-6 p-4 text-white pb-3 items-center"
+    >
       <div>
         <h4 className="uppercase font-semibold">Qr-restuarent</h4>
       </div>
