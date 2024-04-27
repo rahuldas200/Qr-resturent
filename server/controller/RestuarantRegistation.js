@@ -10,10 +10,19 @@ exports.sendotp = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-      res.status(200).json({
+      return res.status(200).json({
         success: false,
         message: "Email is required",
       });
+    }
+
+    const CheckUser = await Restuarent.findOne({email});
+
+    if(CheckUser){
+      return res.status(200).json({
+        success:false,
+        message:"User already registered",
+      })
     }
 
     var otp = otpGenerator.generate(6, {
@@ -32,16 +41,19 @@ exports.sendotp = async (req, res) => {
       });
     }
 
-    const otpBody = await Otp.create(email, otp);
+    const otpBody = await Otp.create({email, otp});
+
     console.log("OTP Body", otpBody);
-    res.status(200).json({
+
+    return res.status(200).json({
       success: true,
       message: `OTP Sent Successfully`,
-      otpBody,
+      otp,
     });
+
   } catch (error) {
-    console.log(error);
-    res.status(200).json({
+     console.log(error);
+     return res.status(200).json({
       success: false,
       message: "Restuarent registation faild",
     });
@@ -51,16 +63,18 @@ exports.sendotp = async (req, res) => {
 exports.registation = async (req, res) => {
   try {
     const { email, restuarentName, password, confirmPassword, otp } = req.body;
+    console.log(email, restuarentName, password, confirmPassword, otp)
 
     if (!email || !restuarentName || !password || !confirmPassword || !otp) {
-      res.status(200).json({
+      return res.status(200).json({
         success: false,
         message: "All field are required",
       });
     }
 
+    
     if (password !== confirmPassword) {
-      res.status(200).json({
+      return res.status(200).json({
         success: false,
         message: "Password and confirm password are not match",
       });
@@ -68,22 +82,26 @@ exports.registation = async (req, res) => {
 
     const userExits = await Restuarent.findOne({ email });
 
+    console.log("ywajbqeknaskm",userExits);
+
     if (userExits) {
-      res.status(200).json({
+      return res.status(200).json({
         success: false,
         message: "User already presents",
       });
     }
 
-    const response = await otp.find({ email }).sort({ createdAt: -1 }).limit(1);
+    const response = await Otp.find({ email }).sort({ createdAt: -1 }).limit(1);
+
+    console.log("hii ",response);
 
     if (response.length === 0) {
-      res.status(200).json({
+      return res.status(200).json({
         success: false,
         message: "OTP is not valild",
       });
     } else if (response[0].otp !== otp) {
-      res.status(200).json({
+      return res.status(200).json({
         success: false,
         message: "Otp is not valid",
       });
@@ -98,13 +116,13 @@ exports.registation = async (req, res) => {
     });
 
     if (user) {
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         user,
       });
     }
   } catch (error) {
-    res.status(200).json({
+    return res.status(200).json({
       success: false,
       message: "Restuarent registation faild",
     });
@@ -116,27 +134,27 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(200).json({
+      return res.status(200).json({
         success: false,
-        message: "All field are required",
+        message: "All fields are required",
       });
     }
 
     const user = await Restuarent.findOne({ email });
 
     if (!user) {
-      res.status(200).json({
+      return res.status(200).json({
         success: false,
-        message: "User not found , please signup again",
+        message: "User not found, please sign up again",
       });
     }
 
-    const passwordVerify = bcrypt.compare(password, user.password);
+    const passwordVerify = await bcrypt.compare(password, user.password);
 
     if (!passwordVerify) {
-      res.status(200).json({
+      return res.status(200).json({
         success: false,
-        message: "Password is not matched , please try again",
+        message: "Password is not matched, please try again",
       });
     }
 
@@ -145,40 +163,42 @@ exports.login = async (req, res) => {
       email: user.email,
     };
 
-    const secret_key = process.env.SECRET_KEY;
+    const secret_key = 'uikjljkknlnkl';
+    const newToken = jwt.sign(payload, secret_key);
 
-    const newtToken = jwt.sign(payload, secret_key);
-
-    if (!token) {
-      res.status(200).json({
+    if (!newToken) {
+      return res.status(200).json({
         success: false,
-        message: "token is not created, please try it again",
+        message: "Token is not created, please try again",
       });
     }
+
+    console.log(newToken);
 
     const response = await Restuarent.findByIdAndUpdate(
       user._id,
       {
-        token: newtToken,
+        token: newToken,
       },
       { new: true }
     );
 
     if (response) {
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
-        message: "User loging successfully",
-        data: response,
+        message: "User logged in successfully",
+        user: response,
       });
     }
   } catch (error) {
-    res.status(200).json({
+    return res.status(500).json({
       success: false,
-      message: "Login faild",
-      error,
+      message: "Login failed",
+      error: error.message,
     });
   }
 };
+
 
 exports.UpdateRestuarent = async (req, res) => {
   try {
@@ -186,7 +206,7 @@ exports.UpdateRestuarent = async (req, res) => {
       req.body;
 
     if (!userId || !email) {
-      res.status(200).json({
+      return res.status(200).json({
         success: false,
         message: "Unauthodrized",
       });
@@ -215,7 +235,7 @@ exports.UpdateRestuarent = async (req, res) => {
       );
 
       if (!img) {
-        res.status(200).json({
+        return res.status(200).json({
           success: false,
           message: "profile not uploaded",
         });
@@ -230,7 +250,7 @@ exports.UpdateRestuarent = async (req, res) => {
       );
 
       if (!img) {
-        res.status(200).json({
+        return res.status(200).json({
           success: false,
           message: "banner not uploaded",
         });
@@ -241,16 +261,15 @@ exports.UpdateRestuarent = async (req, res) => {
 
     await user.save();
 
-    res.status(200).json({
+    return  res.status(200).json({
       success: true,
       message: "profile updated successfully",
       user,
     });
   } catch (error) {
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "something went wrong while profile updated",
-      user,
     });
   }
 };

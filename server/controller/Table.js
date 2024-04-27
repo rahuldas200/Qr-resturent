@@ -16,7 +16,7 @@ exports.createTable = async (req, res) => {
         }
 
 
-        const data = 'https://studynotion-delta.vercel.app';
+        const data = 'https://new-portfolio-git-main-rahul-das-projects.vercel.app/';
 
         const options = {
             color: {

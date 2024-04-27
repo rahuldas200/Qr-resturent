@@ -1,10 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter,Routes,Route } from "react-router-dom";
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Registation from './pages/Registation';
 import Dashboard from './pages/Dashboard';
-import Navbar from './Components/Nav/Navbar';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 

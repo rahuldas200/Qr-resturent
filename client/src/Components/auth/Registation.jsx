@@ -1,10 +1,21 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoArrowBack } from "react-icons/io5";
-import Otp from "../Components/Otp";
+import Otp from '../auth/Otp'
+import { useDispatch, useSelector } from "react-redux"
+import { sendOtp } from '../../services/operations/auth'
+import { useNavigate } from "react-router-dom";
 
-const Registration = ({ setview }) => {
-  const [showOtp, setShowOtp] = useState(false);
+
+
+
+const Registation = ({setview}) => {
+
+  const [showOtp, setShowOtp] = useState(false); 
+  const {loading} = useSelector((state) => state.auth)
+  const { token } = useSelector( (state)=> state.auth)
+
+  console.log(loading,token);
 
   const {
     register,
@@ -15,21 +26,25 @@ const Registration = ({ setview }) => {
 
   const onSubmit = async () => {
     const data = getValues();
-    console.log(data);
-    setShowOtp(true);
-   
+    const response  = await sendOtp(data.email);
+
+    console.log(response)
+    
+    if(response){
+      setShowOtp(true);
+    }
   };
 
   return (
-    <div className="w-full flex flex-col mt-10">
+    <div className="w-full flex flex-col">
       {showOtp  ? (
         <Otp data={getValues()}/>
         
       ) : (
-        <div  data-aos="zoom-in" className="p-5 bg-[#242424] rounded-md">
+        <div  data-aos="zoom-in" className="p-5 bg-[#f5f5f5] shadow-2xl  rounded-md border-[1px] border-black text-black">
           <div onClick={() => setview(true)} className=" cursor-pointer flex gap-2 items-center text-blue-500 font-semibold">
             <IoArrowBack className="font-bold"/>
-            <p>Back to login</p>
+            <p className="font-normal" onClick={() => setview(true)}>Back to login</p>
           </div>
           <div className="mt-5 text-center mb-5">
             <h3 className="text-3xl">Restaurant registration</h3>
@@ -51,7 +66,7 @@ const Registration = ({ setview }) => {
                 type="text"
                 id="restuarentName"
                 {...register("restuarentName", { required: true })}
-                className="p-2 bg-[#302f2f] rounded-md text-base"
+                className="p-2 bg-[#ebe9e9] rounded-md text-base"
                 placeholder="Enter your restaurant name"
               />
               {errors.restuarentName && (
@@ -69,7 +84,7 @@ const Registration = ({ setview }) => {
                 type="email"
                 id="email"
                 {...register("email", { required: true })}
-                className="p-2 bg-[#302f2f] rounded-md text-base"
+                className="p-2 bg-[#ebe9e9] rounded-md text-base"
                 placeholder="Enter your email"
               />
               {errors.email && (
@@ -87,7 +102,7 @@ const Registration = ({ setview }) => {
                 type="password"
                 id="password"
                 {...register("password", { required: true })}
-                className="p-2 bg-[#302f2f] rounded-md text-base"
+                className="p-2 bg-[#ebe9e9] rounded-md text-base"
                 placeholder="Enter your password"
               />
               {errors.password && (
@@ -109,7 +124,7 @@ const Registration = ({ setview }) => {
                   validate: (value) =>
                     value === getValues("password") || "Passwords do not match",
                 })}
-                className="p-2 bg-[#302f2f] rounded-md text-base"
+                className="p-2 bg-[#ebe9e9] rounded-md text-base"
                 placeholder="Enter your confirm password"
               />
               {errors.confirmPassword && (
@@ -121,7 +136,7 @@ const Registration = ({ setview }) => {
 
             <div className="flex justify-center">
               <button
-                className="py-2 px-3 rounded-md mt-3 bg-blue-700"
+                className="py-2 px-3 text-white rounded-md mt-3 bg-blue-700"
                 type="submit"
               >
                 Send OTP
@@ -132,6 +147,8 @@ const Registration = ({ setview }) => {
       )}
     </div>
   );
-};
+}
 
-export default Registration;
+export default Registation
+
+

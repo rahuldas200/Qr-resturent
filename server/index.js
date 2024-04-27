@@ -15,7 +15,7 @@ mongoose.connect()
 cloudinaryConnect();
 
 const corsOptions = {
-  origin: 'http://example.com', // only allow requests from this origin
+  origin: 'http://localhost:5173', // only allow requests from this origin
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: 'Content-Type,Authorization',
   exposedHeaders: 'Content-Range,X-Content-Range',

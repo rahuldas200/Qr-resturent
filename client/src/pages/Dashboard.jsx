@@ -9,6 +9,11 @@ import Manus from "../Components/Dashboard/Manus";
 import Ordres from "../Components/Dashboard/Ordres";
 import Tables from "../Components/Dashboard/Tables";
 import Profile from "../Components/Dashboard/Profile";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { FaAnglesLeft } from "react-icons/fa6";
+import { useEffect } from 'react';
+import { FaMoon } from "react-icons/fa";
+import { WiDayCloudy } from "react-icons/wi";
 
 const sideLink = [
   {
@@ -45,27 +50,97 @@ const sideLink = [
 
 const Dashboard = () => {
   const [viewComponent, setViewComponent] = useState(1);
+  const [menu_Burger,set_Menu_Burger] = useState(true);
+
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
+  const [dark , setDark] = useState(true);
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+      setScreenHeight(window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
+  useEffect(() => {
+    if (screenWidth < 768) {
+      set_Menu_Burger(true);
+    } else {
+      set_Menu_Burger(false);
+    }
+  }, [screenWidth]); 
+
+  
 
   const handleClick = (id) => {
     setViewComponent(id);
   };
 
+  const togel_menu_Burger = () => {
+    set_Menu_Burger(false)
+  }
+
+  const togel_AngalLeft = () => {
+    set_Menu_Burger(true)
+  }
+
   return (
-    <div className="flex relative">
-      <div className="bg-[#161616] w-[15%]  p-3 flex flex-col gap-3 fixed left-0 h-screen">
-        {sideLink.map((item) => (
-          // border-b-[1px] border-b-white border-opacity-30
-          <div
-            onClick={() => handleClick(item.id)}
-            className="text-base font-normal text-white flex gap-3 p-3 items-center bg-[#424141] rounded-md opacity-70"
-            key={item.id}
-          >
-            {item.icon}
-            <p className="">{item.title}</p>
-          </div>
-        ))}
+    <div className="flex relative ">
+      <div className="bg-[#161616]   p-3 flex flex-col gap-3 h-full ">
+        {
+          menu_Burger ? (
+            <div onClick={togel_menu_Burger} className="max-sm:"> 
+              <GiHamburgerMenu   className="text-white text-2xl font-bold" />
+            </div>
+          ) 
+          : (
+              <>
+                <div className="flex justify-end gap-6 items-center p-2 bg-blue-600 rounded-sm">
+                  {
+                    dark ?(
+                      <div  className="p-2 bg-blue-900 rounded-full"> 
+                        <FaMoon className=" text-white"/>
+                      </div>
+                    ) : (
+                      <div className="p-2 bg-blue-900 rounded-full">
+                          <WiDayCloudy className=" text-white"/>
+                      </div>
+                    )
+                  }
+
+                   <div className="p-2 bg-blue-900 rounded-full">
+                      <FaAnglesLeft onClick={togel_AngalLeft}  className="text-white  font-bold"/>
+                   </div>
+                </div>
+                {
+                  sideLink.map((item) => (
+                    // border-b-[1px] border-b-white border-opacity-30
+                    <div
+                      onClick={() => handleClick(item.id)}
+                      className="text-base min-w-36 cursor-pointer font-normal text-white flex gap-3 p-3 items-center bg-[#424141] rounded-sm opacity-70"
+                      key={item.id}
+                    >
+                      {item.icon}
+                      <p className="">{item.title}</p>
+                    </div>
+                  ))
+                }
+              </>
+          )
+        }
+        
+      
+        
       </div>
-      <div className="bg-[#242424] w-[85%] min-h-screen absolute right-0 p-3">
+      <div className="bg-[#242424]  min-h-screen p-3">
         {viewComponent === 1 && <Profile />}
         {viewComponent === 2 && <Manus />}
         {viewComponent === 3 && <Tables />}
