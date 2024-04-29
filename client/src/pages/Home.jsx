@@ -1,14 +1,24 @@
-import React, { useState } from "react";
-import Lottie from "lottie-react";
-import Animation from "../assets/animation/Animation - 1711622905776.json";
+import React, { useEffect, useState } from "react";
 import Login from "../Components/auth/Login";
 import Registation from "../Components/auth/Registation";
-import Navbar from "../Components/Nav/Navbar";
-import OTPInput from "react-otp-input";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 
 const Home = () => {
   const [view, setview] = useState(true);
+  const {token} = useSelector( (state) => state.auth);
+  const {restaurantData} = useSelector( (state) => state.auth);
+  console.log(restaurantData);
+
+  const navigate = useNavigate();
+
+  useEffect ( () => {
+    if(token !== null){
+      navigate(`/restaurant/${restaurantData.user._id}/dashboard`)
+    }
+  
+  },[])
 
   return (
     <>

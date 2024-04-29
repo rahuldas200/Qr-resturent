@@ -1,12 +1,13 @@
 import {authEndpoints} from '../apis'
 import { apiConnector } from '../apiConnector'
-import { setLoading,setToken } from '../../slices/auth';
+import { setLoading,setToken,setRestaurantData } from '../../slices/auth';
 import { toast } from 'react-toastify';
 
 const {
     SEND_OPT,
     LOGIN_API,
     REGISTATION,
+    GET_USER_DATA_API
 
 } = authEndpoints;
 
@@ -68,6 +69,8 @@ export const registation = async (email,password) => {
 export const login = async (data,navigate,dispatch) => {
     
     const id =  toast.loading("connect with dashbord")
+
+    dispatch(setLoading(true))
     try{
         const response = await apiConnector("POST",LOGIN_API,data);
 
@@ -75,10 +78,9 @@ export const login = async (data,navigate,dispatch) => {
         const userId = response.data.user?._id;
         if(response.data.success === true){
             toast.success(response.data.message);
-            localStorage.setItem("token",JSON.stringify(response?.data?.user?.token))
             dispatch(setToken(response?.data?.user?.token))
-            // dispatch(setUserData(response.data.user));
-            navigate(`/dashboard/${userId}`)
+            dispatch(setRestaurantData(response?.data));
+            navigate(`/restaurant/${userId}`)
         }
         else toast.error(response.data.message);
 
@@ -86,4 +88,30 @@ export const login = async (data,navigate,dispatch) => {
         console.log(error)
     }
     toast.dismiss(id);
+    dispatch(setLoading(false))
 }
+
+
+export const getUser = async (token) => {
+    let result = null;
+
+    try {
+        const response = await apiConnector("GET", GET_USER_DATA_API,null, {
+            Authorization: `Bearer ${token}`,
+        });
+
+        console.log(response.data); // Log the response data
+
+        if (response.data.success !== false) {
+            result = response.data.response; // Return the response data if success is not false
+        } else {
+            throw new Error("Failed to get user data"); // Throw an error if success is false
+        }
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        throw error; // Rethrow the error to handle it in the calling function
+    }
+    console.log(result.response)
+    return result;
+}
+

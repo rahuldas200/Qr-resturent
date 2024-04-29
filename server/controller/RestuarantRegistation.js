@@ -273,3 +273,41 @@ exports.UpdateRestuarent = async (req, res) => {
     });
   }
 };
+
+exports.getUserData = async (req, res) => {
+  try{
+    const { userId } = req.body;
+
+    console.log(req.body)
+
+    if(!userId){
+      return res.status(200).json( {
+        success:false,
+        message:"User id rquired"
+      })
+    }
+
+    const response = await Restuarent.findById(userId);
+
+    if(!response){
+      return res.status(200).json( {
+        success:false,
+        message:"User not found"
+      })
+    }
+
+    return res.status(200).json( {
+      success:true,
+      message:"User find successfully",
+      response
+    })
+
+  }catch(error){
+    if(!response){
+      return res.status(200).json( {
+        success:false,
+        message:"User foud error"
+      })
+    }
+  }
+}
