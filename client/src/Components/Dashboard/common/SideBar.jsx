@@ -1,10 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaAnglesLeft } from "react-icons/fa6";
+import { CgLogOut } from "react-icons/cg";
+
 
 import { sideLink } from "../../../data/sideLink";
 
 const SideBar = () => {
+
+  const aditionalFunction = [
+    {
+      id: 5,
+      title: "Logout",
+      link: "/manu",
+      icon: <CgLogOut/>,
+    },
+    {
+      id: 5,
+      title: "Restaurant Closed",
+      link: "/manu",
+      icon: <CgLogOut/>,
+    },
+  ]
+
   const [menu_Burger, set_Menu_Burger] = useState(true);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
@@ -30,7 +48,7 @@ const SideBar = () => {
 
 
   return (
-    <div className="p-2 flex flex-col gap-3 h-screen dark:bg-richblack-700">
+    <div className={`p-2 ${menu_Burger ? "min-w-15" :"w-60 "}  flex flex-col gap-3 h-screen dark:bg-richblack-700`}>
       {
         menu_Burger ? (
           <div
