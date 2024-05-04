@@ -43,17 +43,20 @@ export const sendOtp = async (email) => {
 }
 
 
-export const registation = async (email,password) => {
+export const registation = async (data) => {
 
     let result = null;
+    console.log(data)
     setLoading(true);
     try {
 
-        const response = await apiConnector("POST",REGISTATION,email,password);
+        const response = await apiConnector("POST",REGISTATION,data);
 
+        console.log(response);
         if(response.data.success !== false){
             toast.error(response.data.message);
         }
+
         toast.success(response.data.message)
         result = response.data;
 

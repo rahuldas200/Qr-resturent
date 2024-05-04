@@ -4,12 +4,10 @@ exports.verifytoken = async (req,res,next) => {
 
     try {
        
-
         const token =
 			req.body.token ||
 			req.header("Authorization").replace("Bearer ", "");
 
-        console.log("token   ",token) 
 
         if(!token){
             return res.status(200).json( 
@@ -30,9 +28,10 @@ exports.verifytoken = async (req,res,next) => {
                     message: "Token is not valid",
                 });
             } else {
-                if (decoded && decoded.userId && decoded.email) {
-                    req.body.userId = decoded.userId;
-                    req.body.email = decoded.email;
+                
+                if (decoded && decoded.restaurant_id && decoded.restaurant_email) {
+                    console.log("hii boss i am here ",decoded)
+                    req.restaurant = decoded;
                     next();
                 } else {
                     return res.status(200).json({

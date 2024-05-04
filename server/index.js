@@ -2,8 +2,9 @@ const express = require('express');
 const cors = require('cors')
 const mongoose = require('./config/mongoose');
 const {cloudinaryConnect} = require('./config/Cloudinay');
+const fileUpload = require("express-fileupload");
 const authRoute = require('./routes/Auth');
-const manuRoute = require('./routes/Manu');
+const manuRoute = require('./routes/Menu');
 const tableRoute = require('./routes/Table');
 require('dotenv').config();
 
@@ -23,11 +24,18 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
+app.use(
+	fileUpload({
+		useTempFiles: true,
+		tempFileDir: "/tmp/",
+	})
+);
+
 
 app.use('/api/v1/auth',authRoute);
-app.use('/api/v1/manu',manuRoute);
+app.use('/api/v1/menu',manuRoute);
 app.use('api/v1/table',tableRoute);
 
 

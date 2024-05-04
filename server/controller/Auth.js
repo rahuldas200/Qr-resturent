@@ -1,9 +1,10 @@
-const Restuarent = require("../model/Restuarant");
+const Restaurant = require("../model/Restaurant");
 const Otp = require("../model/Otp");
 const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+require('dotenv').config();
 
 exports.sendotp = async (req, res) => {
   try {
@@ -16,7 +17,7 @@ exports.sendotp = async (req, res) => {
       });
     }
 
-    const CheckUser = await Restuarent.findOne({email});
+    const CheckUser = await Restaurant.findOne({email});
 
     if(CheckUser){
       return res.status(200).json({
@@ -55,20 +56,22 @@ exports.sendotp = async (req, res) => {
      console.log(error);
      return res.status(200).json({
       success: false,
-      message: "Restuarent registation faild",
+      message: "Restaurant registation faield",
     });
   }
 };
 
 exports.registation = async (req, res) => {
   try {
-    const { email, restuarentName, password, confirmPassword, otp } = req.body;
-    console.log(email, restuarentName, password, confirmPassword, otp)
+    console.log(req.body);
+    const { email, restaurantName, password, confirmPassword, otp } = req.body;
+    
 
-    if (!email || !restuarentName || !password || !confirmPassword || !otp) {
+    if (!email || !restaurantName || !password || !confirmPassword || !otp) {
       return res.status(200).json({
         success: false,
-        message: "All field are required",
+        message: "All field are required i dont know why,",
+
       });
     }
 
@@ -80,9 +83,8 @@ exports.registation = async (req, res) => {
       });
     }
 
-    const userExits = await Restuarent.findOne({ email });
+    const userExits = await Restaurant.findOne({ email });
 
-    console.log("ywajbqeknaskm",userExits);
 
     if (userExits) {
       return res.status(200).json({
@@ -109,9 +111,9 @@ exports.registation = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await Restuarent.create({
+    const user = await Restaurant.create({
       email,
-      restuarentName,
+      restaurantName,
       password: hashedPassword,
     });
 
@@ -140,16 +142,16 @@ exports.login = async (req, res) => {
       });
     }
 
-    const user = await Restuarent.findOne({ email });
+    const restaurant = await Restaurant.findOne({ email });
 
-    if (!user) {
+    if (!restaurant) {
       return res.status(200).json({
         success: false,
         message: "User not found, please sign up again",
       });
     }
 
-    const passwordVerify = await bcrypt.compare(password, user.password);
+    const passwordVerify = await bcrypt.compare(password, restaurant.password);
 
     if (!passwordVerify) {
       return res.status(200).json({
@@ -159,12 +161,12 @@ exports.login = async (req, res) => {
     }
 
     const payload = {
-      userId: user._id,
-      email: user.email,
+      restaurant_id: restaurant._id,
+      restaurant_email: restaurant.email,
     };
 
-    const secret_key = 'uikjljkknlnkl';
-    const newToken = jwt.sign(payload, secret_key);
+
+    const newToken = jwt.sign(payload, process.env.secret_key);
 
     if (!newToken) {
       return res.status(200).json({
@@ -173,16 +175,16 @@ exports.login = async (req, res) => {
       });
     }
 
-    console.log(newToken);
+    console.log("hii boss - ",newToken);
 
-    const response = await Restuarent.findByIdAndUpdate(
-      user._id,
+    const response = await Restaurant.findByIdAndUpdate(
+      restaurant._id,
       {
         token: newToken,
       },
       { new: true }
     );
-
+    console.log(response)
     if (response) {
       return res.status(200).json({
         success: true,
@@ -214,7 +216,7 @@ exports.UpdateRestuarent = async (req, res) => {
     const profile = req.files.profile;
     const banner = req.files.banner;
 
-    const user = await Restuarent.findById({ userId });
+    const user = await Restaurant.findById({ userId });
 
     if (restuarentAbout) {
       user.restuarentAbout = restuarentAbout;

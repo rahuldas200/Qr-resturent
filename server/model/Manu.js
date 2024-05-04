@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
-const manuSchema = new mongoose.Schema({
+const menuSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-  aboutDish: {
+  aboutMenu: {
     type: String,
     required: true,
   },
@@ -13,7 +13,7 @@ const manuSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  images: [
+  thumbnail: [
     {
       type: String,
       required: true,
@@ -21,7 +21,7 @@ const manuSchema = new mongoose.Schema({
   ],
   catagory: {
     type: String,
-    enum: ["vag", "nonVag"],
+    enum: ["vag", "nonvag"],
     required: true,
   },
   retingAndReview: [
@@ -32,5 +32,5 @@ const manuSchema = new mongoose.Schema({
   ],
 });
 
-const manu = mongoose.model("manu", manuSchema);
-module.exports = manu;
+const Menu = mongoose.model("Menu", menuSchema);
+module.exports = Menu;

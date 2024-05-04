@@ -5,10 +5,14 @@ import { MdTableRestaurant } from "react-icons/md";
 import { IoFastFoodOutline } from "react-icons/io5";
 import { GoListOrdered } from "react-icons/go";
 import { SiAirtable } from "react-icons/si";
+const user = JSON.parse(localStorage.getItem("restaurantData")) || null;
+const id = user?.user?._id
+// "662cdf23e1dae121854e2116"
+console.log(id)
 export const sideLink = [
     {
         id:1,
-        title:"DashBord",
+        title:"Dashbord",
         link:"/restaurant/restaurant_Id/dashboard",
         icon:"gydjqb"
 
@@ -21,17 +25,17 @@ export const sideLink = [
           {
             id:1,
             title:"Table list",
-            path:"/restaurant/restaurant_Id/menu"
+            path:`/restaurant/${id}/menu`
           },
           {
             id:2,
             title:"Create Table",
-            path:"/restaurant/restaurant_Id/menu/add-menu"
+            path:`/restaurant/${id}/menu/add-menu`
           },
           {
             id:3,
             title:"Update Table",
-            path:"restaurant/restaurant_Id/menu/update-menu"
+            path:`restaurant/${id}/menu/update-menu`
           }
         ],
         icon: SiAirtable,
@@ -44,17 +48,17 @@ export const sideLink = [
         {
           id:1,
           title:"Table list",
-          path:"/restaurant/restaurant_Id/menu/table"
+          path:`/restaurant/${id}/menu/table`
         },
         {
           id:2,
           title:"Create Table",
-          path:"/restaurant/restaurant_Id/menu/add-menu/create-table"
+          path:`/restaurant/${id}/menu/add-menu/create-table`
         },
         {
           id:3,
           title:"Update Table",
-          path:"/restaurant/restaurant_Id/update-menu/update-table"
+          path:`/restaurant/${id}/update-menu/update-table`
         }
       ],
       icon: SiAirtable,
@@ -67,7 +71,7 @@ export const sideLink = [
         {
           id:1,
           title:"Order list",
-          path:"/restaurant/restaurant_Id/all-orders"
+          path:`/restaurant/${id}/all-orders`
         },
       ],
       icon: GoListOrdered,
@@ -80,20 +84,20 @@ export const sideLink = [
         {
           id:1,
           title:"Restaurant Details",
-          path:"/restaurant/restaurant_Id/restaurant-details"
+          path:`/restaurant/${id}/restaurant-details`
         },
         {
           id:2,
           title:"Update restaurant",
-          path:"/restaurant/restaurant_Id/update-restaurant-details"
+          path:`/restaurant/${id}/update-restaurant-details`
         },
         {
           id:3,
           title:"Delete Restaurant",
-          path:"/restaurant/restaurant_Id/delete-restaurant"
+          path:`/restaurant/${id}/delete-restaurant`
         }
       ],
       icon: FaUserAlt,
     },
-  ];
+];
   

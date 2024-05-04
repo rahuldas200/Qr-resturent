@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { sendotp ,registation, login ,UpdateRestuarent,getUserData } = require('../controller/RestuarantRegistation')
+const { sendotp ,registation, login ,UpdateRestuarent,getUserData } = require('../controller/Auth')
 const { verifytoken } = require('../middlewares/Auth');
 
 // -------------  routes --------------

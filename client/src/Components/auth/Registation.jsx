@@ -15,8 +15,6 @@ const Registation = ({setview}) => {
   const {loading} = useSelector((state) => state.auth)
   const { token } = useSelector( (state)=> state.auth)
 
-  console.log(loading,token);
-
   const {
     register,
     handleSubmit,
@@ -59,13 +57,13 @@ const Registation = ({setview}) => {
             className="flex flex-col gap-2"
           >
             <div className="flex flex-col gap-2">
-              <label className="text-base" htmlFor="restuarentName">
+              <label className="text-base" htmlFor="restaurantName">
                 Restaurant name <span>*</span>
               </label>
               <input
                 type="text"
-                id="restuarentName"
-                {...register("restuarentName", { required: true })}
+                id="restaurantName"
+                {...register("restaurantName", { required: true })}
                 className="p-2 bg-[#ebe9e9] rounded-md text-base"
                 placeholder="Enter your restaurant name"
               />

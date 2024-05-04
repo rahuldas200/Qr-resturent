@@ -15,18 +15,19 @@ const Otp = ({ data }) => {
     const formData = { ...data };
     formData.otp = otp;
 
-    setOtp(null);
+    
     const response = await registation(formData);
     console.log(response);
 
-    if(response.success === true){
-      const loginData = {
-        email:response.user.email,
-        password : formData.password,
-      }
+    // if(response.success === true){
+    //   setOtp(null);
+    //   const loginData = {
+    //     email:response.user.email,
+    //     password : formData.password,
+    //   }
 
-      const login_response = await login(loginData);
-    }
+    //   const login_response = await login(loginData);
+    // }
 
 
 

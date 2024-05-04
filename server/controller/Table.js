@@ -1,4 +1,4 @@
-const restuarent = require('../model/Restuarant');
+const restuarent = require('../model/Restaurant');
 const table = require('../model/Table');
 const QRCode = require('qrcode');
 
