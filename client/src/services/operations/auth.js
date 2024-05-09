@@ -76,8 +76,6 @@ export const login = async (data,navigate,dispatch) => {
     dispatch(setLoading(true))
     try{
         const response = await apiConnector("POST",LOGIN_API,data);
-
-        console.log(response);
         const userId = response.data.user?._id;
         if(response.data.success === true){
             toast.success(response.data.message);
@@ -116,5 +114,16 @@ export const getUser = async (token) => {
     }
     console.log(result.response)
     return result;
+}
+
+export const logout = async (navigate,dispatch)=> {
+    try{      
+        dispatch(setToken(null));
+        dispatch(setRestaurantData(null));
+        toast.success("Logout successfully");
+        navigate("/");
+    } catch(error){
+        console.log(error);
+    }
 }
 

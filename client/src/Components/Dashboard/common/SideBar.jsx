@@ -5,7 +5,7 @@ import { CgLogOut } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { MdDashboard } from "react-icons/md";
-import { GrUnorderedList } from "react-icons/gr"
+import { GrUnorderedList } from "react-icons/gr";
 import { MdRestaurantMenu } from "react-icons/md";
 import { IoTabletLandscapeOutline } from "react-icons/io5";
 import { FaHistory } from "react-icons/fa";
@@ -14,53 +14,51 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { IoLockClosedOutline } from "react-icons/io5";
 
 
-const SideBar = () => {
+
+const SideBar = ({setOpen}) => {
   const { restaurantData } = useSelector((state) => state.auth);
-
-  console.log(restaurantData);
-
   const sideLink = [
     {
       id: 1,
       title: "Dashboard",
       path: `/restaurant/${restaurantData.user._id}/dashboard`,
-      icon:<MdDashboard/>
+      icon: <MdDashboard />,
     },
     {
-      id: 1,
+      id: 2,
       title: "Orders",
-      path: `/restaurant/${restaurantData.user._id}/dashboard`,
-      icon:<GrUnorderedList/>
+      path: `/restaurant/${restaurantData.user._id}/orders`,
+      icon: <GrUnorderedList />,
     },
     {
-      id: 1,
+      id: 3,
       title: "Menu item",
       path: `/restaurant/${restaurantData.user._id}/Menu`,
-      icon:<MdRestaurantMenu/>
+      icon: <MdRestaurantMenu />,
     },
     {
-      id: 1,
+      id: 4,
       title: "Tables",
-      path: `/restaurant/${restaurantData.user._id}/dashboard`,
-      icon:<IoTabletLandscapeOutline/>
+      path: `/restaurant/${restaurantData.user._id}/tables`,
+      icon: <IoTabletLandscapeOutline />,
     },
     {
-      id: 1,
+      id: 5,
       title: "Order history",
-      path: `/restaurant/${restaurantData.user._id}/dashboard`,
-      icon:<FaHistory/>
+      path: `/restaurant/${restaurantData.user._id}/order-history`,
+      icon: <FaHistory />,
     },
     {
-      id: 1,
+      id: 6,
       title: "Notification",
-      path: `/restaurant/${restaurantData.user._id}/dashboard`,
-      icon:<IoIosNotifications/>
+      path: `/restaurant/${restaurantData.user._id}/notification`,
+      icon: <IoIosNotifications />,
     },
     {
-      id: 1,
+      id: 7,
       title: "Setting",
-      path: `/restaurant/${restaurantData.user._id}/dashboard`,
-      icon:<IoSettingsSharp/>
+      path: `/restaurant/${restaurantData.user._id}/setting`,
+      icon: <IoSettingsSharp />,
     },
   ];
 
@@ -75,9 +73,9 @@ const SideBar = () => {
       title: "Logout",
       icon: <CgLogOut />,
     },
-    
   ];
 
+  
   const [menu_Burger, set_Menu_Burger] = useState(true);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
@@ -100,6 +98,14 @@ const SideBar = () => {
       set_Menu_Burger(false);
     }
   }, [screenWidth]);
+
+  const handleClick = async (id) => {
+    if (id === 2) {
+      setOpen(true);
+    } else {
+      console.log("close");
+    }
+  };
 
   return (
     <div
@@ -127,24 +133,22 @@ const SideBar = () => {
               <ul>
                 {sideLink.map((data) => (
                   <li key={data.id} className="py-2 flex items-center gap-2">
-                    <div className="pl-2 text-lg">
-                      {data.icon}
-                    </div>
+                    <div className="pl-2 text-lg">{data.icon}</div>
                     <Link to={data.path}>{data.title}</Link>
                   </li>
                 ))}
               </ul>
-              <ul>
-                {
-                  aditionalFunction.map( (item)=> (
-                    <li key={item.id} className=" py-2 flex items-center gap-3">
-                      <div className="pl-2">
-                        {item.icon}
-                      </div>
-                      <Link to={item.path}>{item.title}</Link>
-                    </li>
-                  ) )
-                }
+              <ul className="mb-8">
+                {aditionalFunction.map((item) => (
+                  <li
+                    key={item.id}
+                    onClick={() => handleClick(item.id)}
+                    className=" cursor-pointer py-2 flex items-center gap-3"
+                  >
+                    <div className="pl-2">{item.icon}</div>
+                    {item.title}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
