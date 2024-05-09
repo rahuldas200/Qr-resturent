@@ -30,7 +30,6 @@ exports.verifytoken = async (req,res,next) => {
             } else {
                 
                 if (decoded && decoded.restaurant_id && decoded.restaurant_email) {
-                    console.log("hii boss i am here ",decoded)
                     req.restaurant = decoded;
                     next();
                 } else {

@@ -13,12 +13,10 @@ const menuSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  thumbnail: [
-    {
+  thumbnail: {
       type: String,
       required: true,
-    },
-  ],
+  },
   catagory: {
     type: String,
     enum: ["vag", "nonvag"],

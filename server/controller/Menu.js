@@ -7,10 +7,9 @@ require('dotenv').config
 exports.createManu = async (req, res) => {
   try {
     const {restaurant_id,restaurant_email} = req.restaurant;
-    console.log(req.restaurant)
     const {menu_name,menu_about,catagory,price} = req.body; 
-    const thumbnailImage = req.files
-    
+    const thumbnailImage = req.files.thumbnailImage
+
     if(!restaurant_id || !restaurant_email ||! menu_name||!menu_about||!catagory||!price ||!thumbnailImage){
       return res.status(400).json( {
         success:false,
@@ -18,15 +17,28 @@ exports.createManu = async (req, res) => {
       })
     }
 
+    if(!thumbnailImage){
+      return res.status(400).json({
+        success:true,
+        message:"thumbnail not present "
+      })
+    }
+
     const response = await uploadImageToCloudinary(
       thumbnailImage,
       process.env.MENU_FOLDER,
-
     )
-
+    
+    console.log(response);
+    if(!response){
+      return res.status(400).json( {
+        success:false,
+        message:"file upload faild"
+      })
+    }
     const newMenu = await Menu.create({
-      menu_name,
-      menu_about,
+      name:menu_name,
+      aboutMenu:menu_about,
       catagory,
       price,
       thumbnail:response.secure_url,
@@ -40,9 +52,10 @@ exports.createManu = async (req, res) => {
         message:"menu creating field"
       })
     }
-    
-    
-
+    return res.status(200).json({
+      success:true,
+      message:"menu created successfuly"
+    })
 
   }catch (error){
     console.log(error);
