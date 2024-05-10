@@ -6,3 +6,7 @@ export const authEndpoints = {
     REGISTATION:BASE_URL+"/auth/registation",
     GET_USER_DATA_API:BASE_URL + "/auth/getuser",
 }
+
+export const menuEndpoints = {
+    CREATE_CATEGORY_API : BASE_URL+'/menu/create-category'
+}

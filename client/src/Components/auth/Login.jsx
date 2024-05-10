@@ -69,7 +69,7 @@ const Login = ({setview}) => {
           <p onClick={()=> setview(false)} className="mt-2 mr-4 text-end text-blue-600 cursor-pointer">I have't account</p>
 
           <div className="flex justify-center">
-            <button className="py-2 px-3 rounded-sm text-white mt-3 bg-blue-700">
+            <button className="py-2 px-3 rounded-sm text-white mt-3 bg-richwhite-950">
               Login
             </button>
           </div>

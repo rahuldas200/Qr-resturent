@@ -38,7 +38,7 @@ exports.createManu = async (req, res) => {
     }
     const newMenu = await Menu.create({
       name:menu_name,
-      aboutMenu:menu_about,
+      description:menu_about,
       catagory,
       price,
       thumbnail:response.secure_url,

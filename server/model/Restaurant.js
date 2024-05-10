@@ -4,7 +4,7 @@ const restaurantSchema = new mongoose.Schema(
   {
     restuarentName: {
       type: String,
-      requred: true,
+      require: true,
     },
     restuarentAbout: {
       type: String,
@@ -29,8 +29,14 @@ const restaurantSchema = new mongoose.Schema(
     menu: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "courseProgress",
+        ref: "Menu",
       },
+    ],
+    category:[
+      {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Category"
+      }
     ],
     totalTables: {
       type: Number,

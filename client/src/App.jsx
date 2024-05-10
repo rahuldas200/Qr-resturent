@@ -7,6 +7,8 @@ import "aos/dist/aos.css";
 import PrivateRoute from "./Components/auth/PrivateRoute";
 import Profile from "./Components/Dashboard/profile/Profile";
 import Dashboard from "./Components/Dashboard/Dashboard";
+import Menu from "./Components/Dashboard/menuItem/Menu";
+import Category from "./Components/Dashboard/category/Category";
 
 function App() {
   useEffect(() => {
@@ -35,9 +37,11 @@ function App() {
             </PrivateRoute>
           }
         > 
-           <Route path="/restaurant/:userId/*" element={<Dashboard/>} />
+          <Route path="/restaurant/:userId/*" element={<Dashboard/>} />
           <Route path="/restaurant/:userId/dashboard" element={<Dashboard/>} />
           <Route path="/restaurant/:userId/profile" element={<Profile />} />
+          <Route path="/restaurant/:userId/menu" element={<Menu/>}/>
+          <Route path="/restaurant/:userId/category" element={<Category/>}/>
         </Route>
       </Routes>
     </Router>

@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <>
-    <div className=" w-11/12 h-screen mx-auto  flex justify-center items-center rounded-md bg-white">
+    <div className=" w-11/12 h-screen mx-auto  flex justify-center items-center rounded-md">
       <div className=" rounded-lg b text-white flex ">
         {view ? <Login setview={setview} /> : <Registation setview={setview} />}
       </div>

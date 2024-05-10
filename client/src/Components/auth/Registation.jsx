@@ -134,7 +134,7 @@ const Registation = ({setview}) => {
 
             <div className="flex justify-center">
               <button
-                className="py-2 px-3 text-white rounded-md mt-3 bg-blue-700"
+                className="py-2 px-3 bg-richwhite-950 text-white rounded-md mt-3 bg-blue-700"
                 type="submit"
               >
                 Send OTP

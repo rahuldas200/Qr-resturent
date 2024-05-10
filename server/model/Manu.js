@@ -5,7 +5,7 @@ const menuSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  aboutMenu: {
+  description: {
     type: String,
     required: true,
   },
@@ -18,14 +18,13 @@ const menuSchema = new mongoose.Schema({
       required: true,
   },
   catagory: {
-    type: String,
-    enum: ["vag", "nonvag"],
-    required: true,
+    type:mongoose.Schema.Types.ObjectId,
+    require:true,
   },
   retingAndReview: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "reting_and_review",
+      ref: "RetingAndReview",
     },
   ],
 });

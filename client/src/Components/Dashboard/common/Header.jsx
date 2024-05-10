@@ -27,7 +27,7 @@ const Header = ({path}) => {
   };
 
   return (
-    <div className="flex justify-between items-center w-full bg-richwhite-50 dark:bg-richwhite-700 p-2 rounded-md">
+    <div className="flex justify-between items-center w-full bg-richwhite-50 dark:bg-richwhite-700 p-2 rounded-sm">
       <div className="ml-4 flex text-base font-medium text-richwhite-900 dark:text-richwhite-100">
         <p>{path}</p>
       </div>

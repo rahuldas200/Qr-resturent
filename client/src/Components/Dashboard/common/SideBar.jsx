@@ -12,6 +12,7 @@ import { FaHistory } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 import { IoSettingsSharp } from "react-icons/io5";
 import { IoLockClosedOutline } from "react-icons/io5";
+import { BiSolidCategory } from "react-icons/bi";
 
 
 
@@ -33,7 +34,7 @@ const SideBar = ({setOpen}) => {
     {
       id: 3,
       title: "Menu item",
-      path: `/restaurant/${restaurantData.user._id}/Menu`,
+      path: `/restaurant/${restaurantData.user._id}/menu`,
       icon: <MdRestaurantMenu />,
     },
     {
@@ -43,19 +44,25 @@ const SideBar = ({setOpen}) => {
       icon: <IoTabletLandscapeOutline />,
     },
     {
-      id: 5,
+      id:5,
+      title:"Category",
+      path:`/restaurant/${restaurantData.user._id}/category`,
+      icon:<BiSolidCategory/>
+    },
+    {
+      id: 6,
       title: "Order history",
       path: `/restaurant/${restaurantData.user._id}/order-history`,
       icon: <FaHistory />,
     },
     {
-      id: 6,
+      id: 7,
       title: "Notification",
       path: `/restaurant/${restaurantData.user._id}/notification`,
       icon: <IoIosNotifications />,
     },
     {
-      id: 7,
+      id: 8,
       title: "Setting",
       path: `/restaurant/${restaurantData.user._id}/setting`,
       icon: <IoSettingsSharp />,
@@ -122,11 +129,11 @@ const SideBar = ({setOpen}) => {
         </div>
       ) : (
         <>
-          <div className="flex flex-col gap-2 h-full  p-0 rounded-sm mt-2">
-            <div className="p-2 w-full flex justify-end mt-3 bg-[#4ab74c9f] dark:bg-[#4ab74c9f] bg-richwhite-50 shadow-md cursor-pointer  rounded-sm dark:bg-richblack-800">
+          <div className="flex flex-col gap-2 h-full  p-0 rounded-sm mt-1">
+            <div className="p-3 w-full flex justify-end mt-3  bg-richwhite-950 shadow-md cursor-pointer  rounded-sm dark:bg-richblack-100">
               <FaAnglesLeft
                 onClick={() => set_Menu_Burger(!menu_Burger)}
-                className="text-black opacity-70  font-bold dark:text-white mr-2"
+                className=" opacity-70 text-xl  font-bold text-white mr-2"
               />
             </div>
             <div className=" dark:text-richwhite-100 flex flex-col gap-1 h-full justify-between text-base font-normal">
