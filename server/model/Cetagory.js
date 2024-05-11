@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const CetagorySchema = new mongoose.Schema({
-  cetagoryName: {
+  categoryName: {
     type: String,
     require: true,
   },
@@ -19,5 +19,6 @@ const CetagorySchema = new mongoose.Schema({
 
 });
 
-const Cetagory = mongoose.model("Cetagory",CetagorySchema);
-module.exports = Cetagory;
+
+const Category = mongoose.model("Category",CetagorySchema);
+module.exports = Category;

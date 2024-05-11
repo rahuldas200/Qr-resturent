@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-toastify";
 
-const ImgUploader = ({ setImageSrc, imageSrc }) => {
-  const [preview, setPreview] = useState(null);
+const ImgUploader = ({ setImageSrc, imageSrc,preview ,setPreview}) => {
+  
 
   function handleDrop(acceptedFiles) {
     const imageFiles = acceptedFiles.filter((file) =>
@@ -18,18 +18,44 @@ const ImgUploader = ({ setImageSrc, imageSrc }) => {
     }
   }
 
+  function dataURItoBlob(dataURI) {
+    if (!dataURI) {
+      return null;
+    }
+
+    const [metadata, base64Data] = dataURI.split(",");
+    const mime = metadata.match(/:(.*?);/)[1];
+
+    const byteCharacters = atob(base64Data);
+
+    const byteArray = new Uint8Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteArray[i] = byteCharacters.charCodeAt(i);
+    }
+    return new Blob([byteArray], { type: mime });
+  }
+
   function handleFile(file) {
     const render = new FileReader();
     render.readAsDataURL(file);
-    render.onloadend=()=> {
-      setPreview(render.result);
-      console.log(preview)
-    }
+    render.onload = () => {
+      const dataURL = render.result;
+      if (typeof dataURL === "string" && dataURL.startsWith("data:")) {
+        const data = dataURItoBlob(dataURL);
+        setImageSrc(data);
+        setPreview(dataURL);
+      } else {
+        console.error("Invalid data URI:", dataURL);
+      }
+    };
   }
-  
 
   function handleFileInputChange(e) {
-
+    const file = e.target.files[0];
+    if (file) {
+      handleFile(file);
+    }
   }
 
   return (
@@ -44,12 +70,12 @@ const ImgUploader = ({ setImageSrc, imageSrc }) => {
         className="hidden"
         onChange={handleFileInputChange}
       />
-      {imageSrc === null ? (
+      {preview === null ? (
         <label htmlFor="fileElem">
           Drag & Drop files here or click to select
         </label>
       ) : (
-        <div onClick={() => setImageSrc(null)} className="text-end">
+        <div onClick={() => setPreview(null)} className="text-end">
           <RxCross2 />
         </div>
       )}
