@@ -108,7 +108,7 @@ const SideBar = ({setOpen}) => {
 
   const handleClick = async (id) => {
     if (id === 2) {
-      setOpen(true);
+      setOpen('log-out');
     } else {
       console.log("close");
     }

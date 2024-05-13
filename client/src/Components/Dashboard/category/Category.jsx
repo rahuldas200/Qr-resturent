@@ -45,7 +45,7 @@ const Category = () => {
           <CategoryItem />
         </div>
 
-        <div className="bg-richwhite-50 max-h-[30%] rounded-sm text-sm p-3 flex flex-col gap-3 ">
+        <div className="bg-richwhite-50 max-h-full rounded-sm text-sm p-3 flex flex-col gap-3 ">
           <p className="text-center text-lg font-semibold">Add menu Category</p>
           <form onSubmit={submitHandler} className="flex flex-col gap-2">
             <div className="flex flex-col gap-1.5">

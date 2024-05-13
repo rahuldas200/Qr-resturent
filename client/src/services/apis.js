@@ -8,5 +8,6 @@ export const authEndpoints = {
 }
 
 export const menuEndpoints = {
-    CREATE_CATEGORY_API : BASE_URL+'/menu/create-category'
+    CREATE_CATEGORY_API : BASE_URL+'/menu/create-category',
+    FETCH_RESTAURANT_CATEGORY : BASE_URL +'/menu/restaurant-category'
 }

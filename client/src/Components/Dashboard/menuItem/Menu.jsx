@@ -2,7 +2,10 @@ import React from 'react'
 import Header from '../common/Header'
 import { FiPlus } from "react-icons/fi";
 
-const menu = () => {
+const menu = ({setOpen,open}) => {
+
+  console.log(open);
+
   return (
     <div className='flex flex-col gap-5 '>
       <Header path={"Menu item"}/>
@@ -16,15 +19,11 @@ const menu = () => {
             <p className='text-sm'>Add item</p>
           </button>
         </div>
-
-        <div>
-          
-        </div>
-
       </div>
-
     </div>
   )
 }
 
 export default menu
+
+

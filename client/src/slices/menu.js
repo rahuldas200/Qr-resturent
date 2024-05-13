@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialStage = {
-    restaurantCategory:localStorage.getItem("restaurantCategory") ? localStorage.getItem("restaurantCategory") : null,
-    restaurantMenu:localStorage.getItem('restaurantMenu') ? localStorage.getItem('restaurantMenu') : null,
+    restaurantCategory:localStorage.getItem("restaurantCategory") ? JSON.parse(localStorage.getItem("restaurantCategory")) : null,
+    restaurantMenu:localStorage.getItem('restaurantMenu') ? JSON.parse(localStorage.getItem('restaurantMenu')) : null,
 }
 
 const menuSlice = createSlice({

@@ -36,8 +36,8 @@ exports.CreateCategory = async (req, res) => {
     }
 
     const newCategory = await Category.create({
-        categoryName,
-        thumbnail: cloudinaryRes.secure_url,
+      categoryName,
+      thumbnail: cloudinaryRes.secure_url,
     });
 
     if (!newCategory) {
@@ -67,6 +67,45 @@ exports.CreateCategory = async (req, res) => {
     return res.status(404).json({
       success: false,
       message: "Cetagory Create faild",
+    });
+  }
+};
+
+exports.fetchRestaurantCategory = async (req, res) => {
+  try {
+    const { restaurant_id } = req.restaurant;
+    console.log(restaurant_id);
+
+    if (!restaurant_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Restaurant is invalid",
+      });
+    }
+
+    const response = await Restaurant.findById(restaurant_id)
+      .populate({
+        path: "category",
+      })
+      .exec();
+
+    if (!response) {
+      return res.status(400).json({
+        success: false,
+        message: "Could not finfd restaurant",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Restaurant category fetched successfully",
+      data: response.category,
+    });
+
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: "Retch Restaurant Category error",
     });
   }
 };

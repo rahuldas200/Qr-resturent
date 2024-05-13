@@ -2,9 +2,10 @@ import React from 'react'
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from '../../services/operations/auth';
+import { useOpen } from '../../contexts/OpenContext';
 
 const LogOutModal = ({title,description,setOpen}) => {
-
+    // const {open,setOpen} = useOpen;
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -20,7 +21,7 @@ const LogOutModal = ({title,description,setOpen}) => {
             <p className='text-center'>{description}</p>
 
             <div className='flex justify-between gap-3 px-5 mt-4'>
-                <button onClick={() => setOpen(false)} className='px-3 py-2 bg-[#ced500] rounded-sm'>Cancle</button>
+                <button onClick={() => setOpen(null)} className='px-3 py-2 bg-[#ced500] rounded-sm'>Cancle</button>
                 <button onClick={() => handleClick()} className='px-3 py-2 bg-[#1cd500] rounded-sm'>Logout</button>
             </div>
         </div>

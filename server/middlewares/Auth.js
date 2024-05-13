@@ -8,7 +8,6 @@ exports.verifytoken = async (req,res,next) => {
 			req.body.token ||
 			req.header("Authorization").replace("Bearer ", "");
 
-
         if(!token){
             return res.status(200).json( 
                 {
