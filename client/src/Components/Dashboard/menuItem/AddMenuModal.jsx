@@ -13,14 +13,14 @@ const AddMenuModal = () => {
 
   return (
     <div className="h-screen flex justify-center items-center w-screen absolute top-0 left-0 bg-[#45973071]">
-      <div action="" className="w-[30%] bg-richwhite-100 p-3 rounded-sm">
+      <div action="" className="min-w-[30%] bg-richwhite-100 p-3 rounded-sm">
         <div className="flex justify-between">
           <p>Add menu item </p>
           <button onClick={() => setOpen(null)}>
             <RxCross1 />
           </button>
         </div>
-        <form action="" className="mt-5">
+        <form action="" className="mt-5 flex flex-col gap-2">
           <div className="flex flex-col gap-2">
             <label
               for="Category"
@@ -29,7 +29,7 @@ const AddMenuModal = () => {
               Category
             </label>
             <select name="Category" id="" className="p-2 rounded-sm">
-              {/* <option >Select category</option> */}
+              <option >Select category</option>
               {restaurantCategory.map((item) => (
                 <option value={item._id} className="" key={item._id}>
                   {item.categoryName}
@@ -49,12 +49,16 @@ const AddMenuModal = () => {
             <label htmlFor="">Price</label>
             <input className="p-2" type="number" name="" id="" />
           </div>
-          <div className="flex f">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="">Add thampnail</label>
             <ImgUploader
                 setImageSrc={setImageSrc}
                 preview={preview}
                 setPreview={setPreview}
             />
+          </div>
+          <div className=" flex justify-center mt-4">
+            <button className="p-2 bg-black text-white rounded-sm">Create</button>
           </div>
         </form>
       </div>

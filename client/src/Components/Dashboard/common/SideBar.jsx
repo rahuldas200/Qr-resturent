@@ -130,7 +130,11 @@ const SideBar = ({setOpen}) => {
       ) : (
         <>
           <div className="flex flex-col gap-2 h-full  p-0 rounded-sm mt-1">
-            <div className="p-3 w-full flex justify-end mt-3  bg-richwhite-950 shadow-md cursor-pointer  rounded-sm dark:bg-richblack-100">
+            <div className="p-3 w-full flex justify-between mt-3 cursor-pointer  rounded-sm ">
+              <FaAnglesLeft
+                onClick={() => set_Menu_Burger(!menu_Burger)}
+                className=" opacity-70 text-xl  font-bold text-white mr-2"
+              />
               <FaAnglesLeft
                 onClick={() => set_Menu_Burger(!menu_Burger)}
                 className=" opacity-70 text-xl  font-bold text-white mr-2"
