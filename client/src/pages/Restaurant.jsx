@@ -37,6 +37,12 @@ const Restaurant = () => {
           />
         )
       }
+      {
+        open === 'add-menu' && (
+          <AddMenuModal
+          />
+        )
+      }
     </div>
       
     );
