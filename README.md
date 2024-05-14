@@ -1,4 +1,4 @@
-<h1>Qr-based Restaurant management System</h1> | June 2024 – Present
+<h1>Qr-based Restaurant management System</h1>
   <p>• Developed a multi-user system allowing customers to scan QR-Codes for menu access and order placement,
   enhancing efficiency and customer experience. Implemented features for restaurant administrators to manage orders
   seamlessly.</p>
