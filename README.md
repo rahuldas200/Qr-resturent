@@ -7,4 +7,4 @@
   <p>  • Implemented secure email authentication for seamless restaurant registration and login.</p>
    <p> • Created an intuitive, responsive user interface to optimize accessibility across all devices.</p>
   <p> • Led all aspects of the project, from conception to deployment, showcasing leadership, problem-solving, and
-  technical skills in developing the QR-based restaurant management system.</p>
+  technical skills in developing the QR-based restaurant management system</p>
